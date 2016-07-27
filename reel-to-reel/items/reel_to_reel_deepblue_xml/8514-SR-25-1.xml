@@ -1,0 +1,50 @@
+<audio_item>
+  <parent_collection>2027.42/120451</parent_collection>
+  <dc.identifier.other>8514-SR-25-1</dc.identifier.other>
+  <dc.title>Sound Recording - The 'Domino Theory' as it applies in Southeast Asia - 1965 May 15</dc.title>
+  <dc.contributor.author>Guild House (Ann Arbor, Mich.)</dc.contributor.author>
+  <dc.owningcollname>Guild House records</dc.owningcollname>
+  <dc.date.issued>2016</dc.date.issued>
+  <dc.date.created>6/05/2014</dc.date.created>
+  <dc.coverage.temporal>1965 May 15</dc.coverage.temporal>
+  <dc.type>Conferences</dc.type>
+  <dc.rights.access>This material is available for research only in the Reading Room of the Bentley Historical Library at the University of Michigan (Ann Arbor, MI).</dc.rights.access>
+  <dc.rights.copyright>This recording may be protected by copyright law. Every audio, visual, or textual work has copyright protection unless that protection has expired over time or its creator has placed it in the public domain. It is the responsibility of anyone interested in reproducing, broadcasting or publishing content from the Bentley Historical Library collections to determine copyright holders and secure permissions accordingly.</dc.rights.copyright>
+  <dc.date.open>2016</dc.date.open>
+  <dc.description.restriction>RESTRICTED</dc.description.restriction>
+  <dc.description>Content note: The sound recording(s) associated with this repository item derive from a single audio reel tape. A single tape may yield multiple audio files if there were variations in tape stock, speed, or channels (i.e. stereo or mono). For more information see http://deepblue.lib.umich.edu/handle/2027.42/108126.</dc.description>
+  <dc.abstract>[Item 25] : [Part 1] : Tape 1One of several topical evening seminars held during the National Teach-In on the Vietnam War."Let no one think that retreat from Vietnam would bring an end to conflict. The battle would be renewed in one country and then another."Moderator: Eric Wolf (University of Michigan); spokesmen for government: Robert Scalapino (Berkeley) and Herbert Spivack (Board of Examination U.S. Foreign Service); spokesmen for opposition: Oliver Clubb, Jr. (Syracuse) and Daniel Lev (Cornell); opposition resource people: Benedict Anderson (Cornell) and Richard Coughlin (University of Virginia). Adams room at the Sheraton Park Hotel, Washington D.C.</dc.abstract>
+  <bitstream><dc.title.filename>8514-SR-25-1-am.wav</dc.title.filename><dc.description.filename>[Item 25] : [Part 1] - Archival Master</dc.description.filename><dc.format.mimetype>audio/wav</dc.format.mimetype></bitstream>
+  <bitstream>
+    <dc.title.filename>8514-SR-25-1-pm.wav</dc.title.filename>
+    <dc.description.filename>[Item 25] : [Part 1] - Production Master</dc.description.filename>
+    <dc.format.mimetype>audio/wav</dc.format.mimetype>
+    <dc.identifier.videostream>1_rxkw82s8</dc.identifier.videostream>
+  </bitstream>
+  <bitstream><dc.title.filename>8514-SR-25-1.mp3</dc.title.filename><dc.description.filename>[Item 25] : [Part 1] - Access Copy</dc.description.filename><dc.format.mimetype>audio/mpeg3</dc.format.mimetype></bitstream>
+  <bitstream>
+    <dc.title.filename>8514-SR-25-1-003.jpg</dc.title.filename>
+    <dc.description.filename>Item Photo</dc.description.filename>
+    <dc.format.mimetype>image/jpeg</dc.format.mimetype>
+  </bitstream>
+  <bitstream>
+    <dc.title.filename>8514-SR-25-1-002.jpg</dc.title.filename>
+    <dc.description.filename>Item Photo</dc.description.filename>
+    <dc.format.mimetype>image/jpeg</dc.format.mimetype>
+  </bitstream>
+  <bitstream>
+    <dc.title.filename>8514-SR-25-1-001.jpg</dc.title.filename>
+    <dc.description.filename>Item Photo</dc.description.filename>
+    <dc.format.mimetype>image/jpeg</dc.format.mimetype>
+  </bitstream>
+  <bitstream>
+    <dc.title.filename>8514-SR-25-1-notes.txt</dc.title.filename>
+    <dc.description.filename>Item Notes</dc.description.filename>
+    <dc.format.mimetype>text/plain</dc.format.mimetype>
+  </bitstream>
+  <bitstream>
+    <dc.title.filename>8514-SR-25-1.xml</dc.title.filename>
+    <dc.description.filename>METS XML</dc.description.filename>
+    <dc.format.mimetype>text/xml</dc.format.mimetype>
+  </bitstream>
+</audio_item>
