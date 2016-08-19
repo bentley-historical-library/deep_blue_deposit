@@ -325,24 +325,17 @@ make_dspace_simple_archive_format(temporary_directory, metadata)
 def move_to_mlibrary_deep_blue(temporary_directory, target_directory, deposit_id):
     print "Moving to " + target_directory + "..."
     
-    shutil.copytree(os.path.join(os.path.dirname(os.path.abspath(__file__)), temporary_directory), os.path.join(target_directory, deposit_id))
-    os.remove(os.path.join(target_directory, deposit_id, logs))
+    for name in os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), temporary_directory)):
+        if name == logs:
+            continue
+        if name == "Thumbs.db":
+            continue
+        if name in bentleystaff_items:
+            shutil.copytree(os.path.join(os.path.dirname(os.path.abspath(__file__)), temporary_directory, name), os.path.join(target_directory, deposit_id + "-BentleyStaff", name))
+        else:
+            shutil.copytree(os.path.join(os.path.dirname(os.path.abspath(__file__)), temporary_directory, name), os.path.join(target_directory, deposit_id, name))
     
 move_to_mlibrary_deep_blue(temporary_directory, target_directory, deposit_id)
-
-# restructuring bentleystaff items
-def restructuring_bentleystaff_items(target_directory, bentleystaff_items):
-    if len(bentleystaff_items) > 0:
-        print "Restructuring BentleyStaff items..."
-    
-    for bentleystaff_item in bentleystaff_items:
-        shutil.copytree(os.path.join(target_directory, deposit_id, bentleystaff_item), os.path.join(target_directory, deposit_id + "-BentleyStaff", bentleystaff_item))
-        shutil.rmtree(os.path.join(target_directory, deposit_id, bentleystaff_item))
-        
-    if os.path.exists(os.path.join(target_directory, deposit_id + "-BentleyStaff")) == True and len(os.listdir(os.path.join(target_directory, deposit_id + "-BentleyStaff"))) == 0:
-        shutil.rmtree(os.path.join(target_directory, deposit_id + "-BentleyStaff"))
-    
-restructuring_bentleystaff_items(target_directory, bentleystaff_items)    
 
 # rename directories so they're more helpful for jose
 def rename_directories_for_jose(target_directory):
