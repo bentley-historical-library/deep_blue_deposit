@@ -5,6 +5,7 @@ from lxml import etree
 from itertools import izip_longest
 from time import strftime
 import shutil
+import winsound
 
 # preliminaries
 def get_deposit_id():
@@ -360,4 +361,5 @@ def clean_up_temporary_directory(directory):
     
 clean_up_temporary_directory(temporary_directory)
 
+winsound.Beep(300, 2000)
 print "Alright, we're done!"
