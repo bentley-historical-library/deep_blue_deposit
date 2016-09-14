@@ -47,7 +47,8 @@ def get_dc_titles_and_dc_description_abstracts(directory, metadata):
 
     for row in ws.iter_rows(row_offset=1):
         dc_titles.append(row[1].value)
-        dc_description_abstracts.append(row[2].value)
+        if dc_description_abstracts:
+            dc_description_abstracts.append(row[2].value)
         
     return dc_titles, dc_description_abstracts
     
@@ -262,7 +263,7 @@ def make_contents(directory, item, dc_title_filenames, dc_description_filenames,
                         f.write(". Access restricted to Bentley Reading Room.")
                 f.write("\tpermissions:-r 'Bentley Only Users'")
                 
-            elif dc_rights_access.startswith("Executive Records") or dc_rights_access.startswith("Personnel Records") or dc_rights_access.startswith("Student Records") or dc_rights_access.startswith("Patient/Client Records"):
+            elif dc_rights_access.startswith("Executive Records") or dc_rights_access.startswith("Personnel Records") or dc_rights_access.startswith("Student Records") or dc_rights_access.startswith("Patient/Client Records") or dc_rights_access.startswith("Permanently Restricted"):
                 if not dc_description_filename:
                     f.write("\tdescription:Access restricted to Bentley staff.")
                 else:
