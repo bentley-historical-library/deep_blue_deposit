@@ -211,8 +211,8 @@ if "dev" in dspace_url:
     digital_object["digital_object_id"] = "http://hdl.handle.net/TEMP-BOGUS/{}".format(handle)
     digital_object["file_versions"].append({"file_uri":"http://hdl.handle.net/TEMP-BOGUS/{}".format(handle), "xlink_show_attribute":"new", "xlink_actuate_attribute":"onRequest"})
 else:
-    digital_object['digital_object_id'] = "http://hdl.handle.net/TEMP-BOGUS/{}".format(handle)
-    digital_object['file_versions'].append({"file_uri":"http://hdl.handle.net/TEMP-BOGUS/{}".format(handle), "xlink_show_attribute":"new", "xlink_actuate_attribute":"onRequest"})
+    digital_object['digital_object_id'] = "http://hdl.handle.net/2027.42/{}".format(handle)
+    digital_object['file_versions'].append({"file_uri":"http://hdl.handle.net/2027.42/{}".format(handle), "xlink_show_attribute":"new", "xlink_actuate_attribute":"onRequest"})
 
 digital_object['publish'] = False
 
