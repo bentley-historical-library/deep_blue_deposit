@@ -54,7 +54,7 @@ for deposititemid, count in Counter(deposititemids).most_common():
 
 depositids_not_in_deepblue = []
 
-archive_directory = os.path.join("R:", "MLibrary Drop", "DeepBlue", "archive_directory")
+archive_directory = os.path.join("R:", "MLibrary Drop", "DeepBlue", "adding_bitstreams")
  
 for log in os.listdir("logs"):
     for admin_info in os.listdir(os.path.join("logs", log)):
