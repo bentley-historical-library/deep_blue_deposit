@@ -40,7 +40,6 @@ for root, _, files in os.walk(deep_blue_saf_staging):
             mets_root = mets_tree.getroot()
 
             # to-do: parse archivesspace info
-            print("Parsing METS...")
 
             # to-do: parse descriptive metadata (and/or get from ArchivesSpace)
 
@@ -74,6 +73,20 @@ for root, _, files in os.walk(deep_blue_saf_staging):
             rights_granted_note = rights_granted[0].find(
                 "premis:rightsGrantedNote",
                 namespaces={"premis": "info:lc/xmlns/premis-v2"}).text
+
+            if not (restriction == "Conditional" and
+            rights_granted_note.split(":")[0] == "Reading-Room Only") or \
+            (restriction == "Conditional" and
+            rights_granted_note.split(":")[0] == "UM Only") or \
+            (restriction == "Conditional" and
+            rights_granted_note.split(":")[0] == "Streaming Only") or \
+            (restriction == "Disallow" and
+            (rights_granted_note.startswith("ER") or
+            rights_granted_note.startswith("PR") or
+            rights_granted_note.startswith("SR") or
+            rights_granted_note.startswith("CR"))):
+                print(("{} has non-standard rights statement".format(aip_name)))
+                continue
 
             # make working copy
             print(("Transforming {} to SAF...".format(aip_name)))
@@ -199,54 +212,54 @@ for root, _, files in os.walk(deep_blue_saf_staging):
 
             # make license
             with open(os.path.join(aip_path, "license.txt"), mode="w") as f:
-                f.write('''As the designated coordinator for this Deep Blue \
-                    Collection, I am authorized by the Community members to \
-                    serve as their representative in all dealings with the \
-                    Repository. As the designee, I ensure that I have read \
-                    the Deep Blue policies. Furthermore, I have conveyed to \
-                    the community the terms and conditions outlined in those \
-                    policies, including the language of the standart deposit \
-                    license quoted below and that the community members have \
-                    granted me the authority to deposit content on their \
-                    behalf.''')
+                f.write("As the designated coordinator for this Deep Blue "
+                    "Collection, I am authorized by the Community members to "
+                    "serve as their representative in all dealings with the "
+                    "Repository. As the designee, I ensure that I have read "
+                    "the Deep Blue policies. Furthermore, I have conveyed to "
+                    "the community the terms and conditions outlined in those "
+                    "policies, including the language of the standart deposit "
+                    "license quoted below and that the community members have "
+                    "granted me the authority to deposit content on their "
+                    "behalf.")
                 f.write("\n")
 
             # make contents
             with open(os.path.join(aip_path, "contents"), mode="w") as f:
                 f.write("metadata.zip")
                 f.write("\t")
-                f.write('''description:Administrative information. \
-                    Access restricted to Bentley staff.''')
+                f.write("description:Administrative information. "
+                    "Access restricted to Bentley staff.")
                 f.write("\t")
                 f.write("permissions:-r 'BentleyStaff'")
                 f.write("\n")
 
                 if restriction == "Conditional" and \
-                    rights_granted_note.split(":")[0] == "Reading-Room Only":
+                rights_granted_note.split(":")[0] == "Reading-Room Only":
                     f.write("objects.zip")
                     f.write("\t")
-                    f.write('''description:Access restricted to \
-                        Bentley Reading Room.''')
+                    f.write("description:Access restricted to "
+                        "Bentley Reading Room.")
                     f.write("\t")
                     f.write("permissions:-r 'Bentley Only Users'")
                     f.write("\n")
 
                 elif restriction == "Conditional" and \
-                    rights_granted_note.split(":")[0] == "UM Only":
+                rights_granted_note.split(":")[0] == "UM Only":
                     f.write("objects.zip")
                     f.write("\t")
-                    f.write('''description:Access restricted to \
-                        UM users.''')
+                    f.write("description:Access restricted to "
+                        "UM users.")
                     f.write("\t")
                     f.write("permissions:-r 'BentleyStaff'")
                     f.write("\n")
 
                 elif restriction == "Conditional" and \
-                    rights_granted_note.split(":")[0] == "Streaming Only":
+                rights_granted_note.split(":")[0] == "Streaming Only":
                     f.write("objects.zip")
                     f.write("\t")
-                    f.write('''description:Download restricted to
-                        Bentley Staff.''')
+                    f.write("description:Download restricted to"
+                        "Bentley Staff.")
                     f.write("\t")
                     f.write("permissions:-r 'BentleyStaff'")
                     f.write("\n")
@@ -254,14 +267,11 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 elif restriction == "Disallow":
                     f.write("objects.zip")
                     f.write("\t")
-                    f.write('''description:Administrative information. \
-                        Access restricted to Bentley Staff.''')
+                    f.write("description:"
+                        "Access restricted to Bentley Staff.")
                     f.write("\t")
                     f.write("permissions:-r 'BentleyStaff'")
                     f.write("\n")
-
-                else:
-                    print("Non-standard rights statement")
 
             # rename folder to make it more semantic
 
