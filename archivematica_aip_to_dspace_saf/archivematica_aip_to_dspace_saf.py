@@ -3,6 +3,7 @@ from lxml import etree
 import shutil
 from zipfile import ZipFile
 import datetime
+import pyttsx
 
 '''
 sudo mount \
@@ -90,7 +91,7 @@ for root, _, files in os.walk(deep_blue_saf_staging):
 
             # make working copy
             print(("Transforming {} to SAF...".format(aip_name)))
-            print("Making working copy...")
+            print("  * Making working copy...")
             shutil.copytree(
                 aip_path,
                 os.path.join(deep_blue_saf_temp, aip_name))
@@ -109,7 +110,7 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 "deep_blue_saf_staging", "deep_blue_saf_temp"), "objects")
 
             # zip stuff
-            print("Zipping files...")
+            print("  * AIP repackaging0...")
             for root, _, files in os.walk(objects_path):
                 for name in files:
                     with ZipFile(os.path.join(aip_path, "objects.zip"),
@@ -138,7 +139,7 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                     os.remove(tag)
 
             # to-do: make the rest of the dublin core
-            print("Writing Dublin Core...")
+            print("  * Converting to SAF...")
             dublin_core = etree.Element("dublin_core")
 
             dc_title = ""
@@ -276,11 +277,29 @@ for root, _, files in os.walk(deep_blue_saf_staging):
             # rename folder to make it more semantic
 
             # move to saf transfer
-            print("Moving to transfer location...")
+            print("  * Moving to transfer location...")
             shutil.copytree(
                 aip_path,
                 os.path.join(deep_blue_saf_transfer, aip_name))
             shutil.rmtree(aip_path)
+
+            # e-mail jose
+            print(
+                "\n"
+                "    ,     ,\n"
+                "   (\____/) ______________\n"
+                "    (_oo_) /              \\\n"
+                "      (O) <  E-mail Jose!  )\n"
+                "    __||__ \__\)__________/\n"
+                " []/______\[] /\n"
+                " / \______/ \/\n"
+                " /    /_\\\n"
+                "(\   /___\\")
+
+            engine = pyttsx.init()
+            engine.setProperty("rate", 70)
+            engine.say("E-mail Jose!")
+            engine.runAndWait()
 
             # to-do: create then update digital object in archivesspace
             # (this might need to be a new script)
