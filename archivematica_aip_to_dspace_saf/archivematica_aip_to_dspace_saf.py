@@ -5,12 +5,12 @@ from zipfile import ZipFile
 import datetime
 import pyttsx
 
-'''
-sudo mount \
--t cifs \
--o username=eckardm,domain=umroot,rw,uid=eckardm,gid=eckardm \
-//bhl-digitalarchive.m.storage.umich.edu/bhl-digitalarchive \
-/media/Digital_Archive'''
+mounting = ["sudo", "mount",
+    "-t", "cifs",
+    "-o", "username=eckardm,domain=umroot,rw,uid=eckardm,gid=eckardm",
+    "//bhl-digitalarchive.m.storage.umich.edu/bhl-digitalarchive",
+    "/media/Digital_Archive"]
+os.system(" ".join(mouting))
 
 deep_blue_saf_staging = os.path.join(
     os.path.sep,
