@@ -27,7 +27,7 @@ for collection in collections:
     for collection_number in collection_numbers:
 
         collection_number = collection_number.get("href", "").split("-")[-1]
-        results.append([collection_number, collection_handle, collection_name])
+        results.append([str(collection_number), collection_handle, collection_name])
 
 with open("collno_handle.csv", mode="wb") as f:
     writer = csv.writer(f)
