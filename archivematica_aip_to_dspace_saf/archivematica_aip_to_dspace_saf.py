@@ -10,7 +10,9 @@ mounting = ["sudo", "mount",
     "-o", "username=eckardm,domain=umroot,rw,uid=eckardm,gid=eckardm",
     "//bhl-digitalarchive.m.storage.umich.edu/bhl-digitalarchive",
     "/media/Digital_Archive"]
-os.system(" ".join(mounting))
+if os.path.isdir(os.path.join(os.path.sep,
+"media", "Digital_Archive")) is False:
+    os.system(" ".join(mounting))
 
 deep_blue_saf_staging = os.path.join(
     os.path.sep,
@@ -54,7 +56,8 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 "premis:rightsGranted",
                 namespaces={"premis": "info:lc/xmlns/premis-v2"})
             if len(rights_granted) > 1:
-                print(("{} has more than one act".format(aip_name)))
+                print(("{0} has {1} acts".format(
+                    aip_name, len(rights_granted))))
                 continue
 
             act = rights_granted[0].find(
@@ -73,18 +76,19 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 "premis:rightsGrantedNote",
                 namespaces={"premis": "info:lc/xmlns/premis-v2"}).text
 
-            if not (restriction == "Conditional" and
-            rights_granted_note.split(":")[0] == "Reading-Room Only") or \
+            if not ((restriction == "Conditional" and
+            rights_granted_note.split(":")[0] == "Reading-Room Only") or
             (restriction == "Conditional" and
-            rights_granted_note.split(":")[0] == "UM Only") or \
+            rights_granted_note.split(":")[0] == "UM Only") or
             (restriction == "Conditional" and
-            rights_granted_note.split(":")[0] == "Streaming Only") or \
+            rights_granted_note.split(":")[0] == "Streaming Only") or
             (restriction == "Disallow" and
             (rights_granted_note.startswith("ER") or
             rights_granted_note.startswith("PR") or
             rights_granted_note.startswith("SR") or
-            rights_granted_note.startswith("CR"))):
-                print(("{} has non-standard rights statement".format(aip_name)))
+            rights_granted_note.startswith("CR")))):
+                print(("{0} has non-standard rights statement: {1}".format(
+                    aip_name, rights_granted_note)))
                 continue
 
             # make working copy
@@ -108,7 +112,7 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 "deep_blue_saf_staging", "deep_blue_saf_temp"), "objects")
 
             # zip stuff
-            print("  * AIP repackaging0...")
+            print("  * AIP repackaging...")
             for root, _, files in os.walk(objects_path):
                 for name in files:
                     with ZipFile(os.path.join(aip_path, "objects.zip"),
