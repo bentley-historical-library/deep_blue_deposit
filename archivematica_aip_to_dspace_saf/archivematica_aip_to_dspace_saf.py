@@ -291,23 +291,23 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 os.path.join(deep_blue_saf_transfer, aip_name))
             shutil.rmtree(aip_path)
 
-            # e-mail jose
-            print(
-                "\n"
-                "    ,     ,\n"
-                "   (\____/) ______________\n"
-                "    (_oo_) /              \\\n"
-                "      (O) <  E-mail Jose!  )\n"
-                "    __||__ \__\)__________/\n"
-                " []/______\[] /\n"
-                " / \______/ \/\n"
-                " /    /_\\\n"
-                "(\   /___\\")
+# e-mail jose
+print(
+    "\n"
+    "    ,     ,\n"
+    "   (\____/) ______________\n"
+    "    (_oo_) /              \\\n"
+    "      (O) <  E-mail Jose!  )\n"
+    "    __||__ \__\)__________/\n"
+    " []/______\[] /\n"
+    " / \______/ \/\n"
+    " /    /_\\\n"
+    "(\   /___\\")
 
-            engine = pyttsx.init()
-            engine.setProperty("rate", 70)
-            engine.say("E-mail Jose!")
-            engine.runAndWait()
+engine = pyttsx.init()
+engine.setProperty("rate", 70)
+engine.say("E-mail Jose!")
+engine.runAndWait()
 
             # to-do: create then update digital object in archivesspace
             # (this might need to be a new script)
