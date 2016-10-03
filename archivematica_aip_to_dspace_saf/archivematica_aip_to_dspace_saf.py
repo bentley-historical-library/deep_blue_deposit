@@ -39,7 +39,7 @@ for root, _, files in os.walk(deep_blue_saf_staging):
 
             mets_tree = etree.parse(mets_path)
             mets_root = mets_tree.getroot()
-            
+
             # to-do: parse archivesspace info
 
             # parse rights statements
@@ -155,7 +155,7 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 dublin_core, "dcvalue",
                 element="date",
                 qualifer="issued").text = dc_date_issued
-            
+
             dc_contributor_author = mets_root.find(
                 ".//dc:creator",
                 namespaces={"dc": "http://purl.org/dc/elements/1.1/"}).text
@@ -163,7 +163,6 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 dublin_core, "dcvalue",
                 element="contributor",
                 qualifer="author").text = dc_contributor_author
-            print dc_title, dc_date_issued, dc_contributor_author
 
             dc_rights_access = rights_granted_note
             etree.SubElement(
