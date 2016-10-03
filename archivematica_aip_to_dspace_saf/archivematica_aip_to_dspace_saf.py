@@ -10,7 +10,7 @@ mounting = ["sudo", "mount",
     "-o", "username=eckardm,domain=umroot,rw,uid=eckardm,gid=eckardm",
     "//bhl-digitalarchive.m.storage.umich.edu/bhl-digitalarchive",
     "/media/Digital_Archive"]
-os.system(" ".join(mouting))
+os.system(" ".join(mounting))
 
 deep_blue_saf_staging = os.path.join(
     os.path.sep,
@@ -39,10 +39,8 @@ for root, _, files in os.walk(deep_blue_saf_staging):
 
             mets_tree = etree.parse(mets_path)
             mets_root = mets_tree.getroot()
-
+            
             # to-do: parse archivesspace info
-
-            # to-do: parse descriptive metadata (and/or get from ArchivesSpace)
 
             # parse rights statements
             rights_statement = mets_root.find(
@@ -142,23 +140,30 @@ for root, _, files in os.walk(deep_blue_saf_staging):
             print("  * Converting to SAF...")
             dublin_core = etree.Element("dublin_core")
 
-            dc_title = ""
+            dc_title = mets_root.find(
+                ".//dc:title",
+                namespaces={"dc": "http://purl.org/dc/elements/1.1/"}).text
             etree.SubElement(
                 dublin_core, "dcvalue",
                 element="title",
                 qualifier="none").text = dc_title
 
-            dc_date_issued = ""
+            dc_date_issued = mets_root.find(
+                ".//dc:date",
+                namespaces={"dc": "http://purl.org/dc/elements/1.1/"}).text
             etree.SubElement(
                 dublin_core, "dcvalue",
                 element="date",
                 qualifer="issued").text = dc_date_issued
-            dc_contributor_author = ""
-
+            
+            dc_contributor_author = mets_root.find(
+                ".//dc:creator",
+                namespaces={"dc": "http://purl.org/dc/elements/1.1/"}).text
             etree.SubElement(
                 dublin_core, "dcvalue",
                 element="contributor",
                 qualifer="author").text = dc_contributor_author
+            print dc_title, dc_date_issued, dc_contributor_author
 
             dc_rights_access = rights_granted_note
             etree.SubElement(
@@ -182,10 +187,10 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                     element="description",
                     qualifer="restriction").text = "RESTRICTED"
 
-            dc_rights_copyright = '''This content may be under copyright. \
-            Researchers are responsible for determining the appropriate use \
-            or reuse of materials. Please consult the collection finding aid \
-            or catalog record for more information'''
+            dc_rights_copyright = "This content may be under copyright. "
+            "Researchers are responsible for determining the appropriate use "
+            "or reuse of materials. Please consult the collection finding aid "
+            "or catalog record for more information."
             etree.SubElement(
                 dublin_core, "dcvalue",
                 element="rights",
