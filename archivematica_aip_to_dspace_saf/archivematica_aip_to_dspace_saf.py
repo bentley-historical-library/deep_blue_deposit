@@ -3,13 +3,16 @@ from lxml import etree
 import shutil
 from zipfile import ZipFile
 import datetime
+import pyttsx
 
-'''
-sudo mount \
--t cifs \
--o username=eckardm,domain=umroot,rw,uid=eckardm,gid=eckardm \
-//bhl-digitalarchive.m.storage.umich.edu/bhl-digitalarchive \
-/media/Digital_Archive'''
+mounting = ["sudo", "mount",
+    "-t", "cifs",
+    "-o", "username=eckardm,domain=umroot,rw,uid=eckardm,gid=eckardm",
+    "//bhl-digitalarchive.m.storage.umich.edu/bhl-digitalarchive",
+    "/media/Digital_Archive"]
+if os.path.isdir(os.path.join(os.path.sep,
+"media", "Digital_Archive")) is False:
+    os.system(" ".join(mounting))
 
 deep_blue_saf_staging = os.path.join(
     os.path.sep,
@@ -40,9 +43,6 @@ for root, _, files in os.walk(deep_blue_saf_staging):
             mets_root = mets_tree.getroot()
 
             # to-do: parse archivesspace info
-            print("Parsing METS...")
-
-            # to-do: parse descriptive metadata (and/or get from ArchivesSpace)
 
             # parse rights statements
             rights_statement = mets_root.find(
@@ -56,7 +56,8 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 "premis:rightsGranted",
                 namespaces={"premis": "info:lc/xmlns/premis-v2"})
             if len(rights_granted) > 1:
-                print(("{} has more than one act".format(aip_name)))
+                print(("{0} has {1} acts".format(
+                    aip_name, len(rights_granted))))
                 continue
 
             act = rights_granted[0].find(
@@ -75,9 +76,24 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 "premis:rightsGrantedNote",
                 namespaces={"premis": "info:lc/xmlns/premis-v2"}).text
 
+            if not ((restriction == "Conditional" and
+            rights_granted_note.split(":")[0] == "Reading-Room Only") or
+            (restriction == "Conditional" and
+            rights_granted_note.split(":")[0] == "UM Only") or
+            (restriction == "Conditional" and
+            rights_granted_note.split(":")[0] == "Streaming Only") or
+            (restriction == "Disallow" and
+            (rights_granted_note.startswith("ER") or
+            rights_granted_note.startswith("PR") or
+            rights_granted_note.startswith("SR") or
+            rights_granted_note.startswith("CR")))):
+                print(("{0} has non-standard rights statement: {1}".format(
+                    aip_name, rights_granted_note)))
+                continue
+
             # make working copy
             print(("Transforming {} to SAF...".format(aip_name)))
-            print("Making working copy...")
+            print("  * Making working copy...")
             shutil.copytree(
                 aip_path,
                 os.path.join(deep_blue_saf_temp, aip_name))
@@ -96,7 +112,7 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 "deep_blue_saf_staging", "deep_blue_saf_temp"), "objects")
 
             # zip stuff
-            print("Zipping files...")
+            print("  * AIP repackaging...")
             for root, _, files in os.walk(objects_path):
                 for name in files:
                     with ZipFile(os.path.join(aip_path, "objects.zip"),
@@ -125,22 +141,28 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                     os.remove(tag)
 
             # to-do: make the rest of the dublin core
-            print("Writing Dublin Core...")
+            print("  * Converting to SAF...")
             dublin_core = etree.Element("dublin_core")
 
-            dc_title = ""
+            dc_title = mets_root.find(
+                ".//dc:title",
+                namespaces={"dc": "http://purl.org/dc/elements/1.1/"}).text
             etree.SubElement(
                 dublin_core, "dcvalue",
                 element="title",
                 qualifier="none").text = dc_title
 
-            dc_date_issued = ""
+            dc_date_issued = mets_root.find(
+                ".//dc:date",
+                namespaces={"dc": "http://purl.org/dc/elements/1.1/"}).text
             etree.SubElement(
                 dublin_core, "dcvalue",
                 element="date",
                 qualifer="issued").text = dc_date_issued
-            dc_contributor_author = ""
 
+            dc_contributor_author = mets_root.find(
+                ".//dc:creator",
+                namespaces={"dc": "http://purl.org/dc/elements/1.1/"}).text
             etree.SubElement(
                 dublin_core, "dcvalue",
                 element="contributor",
@@ -168,10 +190,10 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                     element="description",
                     qualifer="restriction").text = "RESTRICTED"
 
-            dc_rights_copyright = '''This content may be under copyright. \
-            Researchers are responsible for determining the appropriate use \
-            or reuse of materials. Please consult the collection finding aid \
-            or catalog record for more information'''
+            dc_rights_copyright = "This content may be under copyright. "
+            "Researchers are responsible for determining the appropriate use "
+            "or reuse of materials. Please consult the collection finding aid "
+            "or catalog record for more information."
             etree.SubElement(
                 dublin_core, "dcvalue",
                 element="rights",
@@ -199,54 +221,54 @@ for root, _, files in os.walk(deep_blue_saf_staging):
 
             # make license
             with open(os.path.join(aip_path, "license.txt"), mode="w") as f:
-                f.write('''As the designated coordinator for this Deep Blue \
-                    Collection, I am authorized by the Community members to \
-                    serve as their representative in all dealings with the \
-                    Repository. As the designee, I ensure that I have read \
-                    the Deep Blue policies. Furthermore, I have conveyed to \
-                    the community the terms and conditions outlined in those \
-                    policies, including the language of the standart deposit \
-                    license quoted below and that the community members have \
-                    granted me the authority to deposit content on their \
-                    behalf.''')
+                f.write("As the designated coordinator for this Deep Blue "
+                    "Collection, I am authorized by the Community members to "
+                    "serve as their representative in all dealings with the "
+                    "Repository. As the designee, I ensure that I have read "
+                    "the Deep Blue policies. Furthermore, I have conveyed to "
+                    "the community the terms and conditions outlined in those "
+                    "policies, including the language of the standart deposit "
+                    "license quoted below and that the community members have "
+                    "granted me the authority to deposit content on their "
+                    "behalf.")
                 f.write("\n")
 
             # make contents
             with open(os.path.join(aip_path, "contents"), mode="w") as f:
                 f.write("metadata.zip")
                 f.write("\t")
-                f.write('''description:Administrative information. \
-                    Access restricted to Bentley staff.''')
+                f.write("description:Administrative information. "
+                    "Access restricted to Bentley staff.")
                 f.write("\t")
                 f.write("permissions:-r 'BentleyStaff'")
                 f.write("\n")
 
                 if restriction == "Conditional" and \
-                    rights_granted_note.split(":")[0] == "Reading-Room Only":
+                rights_granted_note.split(":")[0] == "Reading-Room Only":
                     f.write("objects.zip")
                     f.write("\t")
-                    f.write('''description:Access restricted to \
-                        Bentley Reading Room.''')
+                    f.write("description:Access restricted to "
+                        "Bentley Reading Room.")
                     f.write("\t")
                     f.write("permissions:-r 'Bentley Only Users'")
                     f.write("\n")
 
                 elif restriction == "Conditional" and \
-                    rights_granted_note.split(":")[0] == "UM Only":
+                rights_granted_note.split(":")[0] == "UM Only":
                     f.write("objects.zip")
                     f.write("\t")
-                    f.write('''description:Access restricted to \
-                        UM users.''')
+                    f.write("description:Access restricted to "
+                        "UM users.")
                     f.write("\t")
                     f.write("permissions:-r 'BentleyStaff'")
                     f.write("\n")
 
                 elif restriction == "Conditional" and \
-                    rights_granted_note.split(":")[0] == "Streaming Only":
+                rights_granted_note.split(":")[0] == "Streaming Only":
                     f.write("objects.zip")
                     f.write("\t")
-                    f.write('''description:Download restricted to
-                        Bentley Staff.''')
+                    f.write("description:Download restricted to"
+                        "Bentley Staff.")
                     f.write("\t")
                     f.write("permissions:-r 'BentleyStaff'")
                     f.write("\n")
@@ -254,23 +276,38 @@ for root, _, files in os.walk(deep_blue_saf_staging):
                 elif restriction == "Disallow":
                     f.write("objects.zip")
                     f.write("\t")
-                    f.write('''description:Administrative information. \
-                        Access restricted to Bentley Staff.''')
+                    f.write("description:"
+                        "Access restricted to Bentley Staff.")
                     f.write("\t")
                     f.write("permissions:-r 'BentleyStaff'")
                     f.write("\n")
 
-                else:
-                    print("Non-standard rights statement")
-
             # rename folder to make it more semantic
 
             # move to saf transfer
-            print("Moving to transfer location...")
+            print("  * Moving to transfer location...")
             shutil.copytree(
                 aip_path,
                 os.path.join(deep_blue_saf_transfer, aip_name))
             shutil.rmtree(aip_path)
+
+# e-mail jose
+print(
+    "\n"
+    "    ,     ,\n"
+    "   (\____/) ______________\n"
+    "    (_oo_) /              \\\n"
+    "      (O) <  E-mail Jose!  )\n"
+    "    __||__ \__\)__________/\n"
+    " []/______\[] /\n"
+    " / \______/ \/\n"
+    " /    /_\\\n"
+    "(\   /___\\")
+
+engine = pyttsx.init()
+engine.setProperty("rate", 70)
+engine.say("E-mail Jose!")
+engine.runAndWait()
 
             # to-do: create then update digital object in archivesspace
             # (this might need to be a new script)

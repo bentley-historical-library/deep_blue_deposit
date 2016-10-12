@@ -158,7 +158,7 @@ def make_dublin_core(directory, row, item):
         
     if row[4].value:
         dc_contributor_others = row[4].value.split("|")
-        for dc_contributor_other in dc_contributor_authors:
+        for dc_contributor_other in dc_contributor_others:
             etree.SubElement(dublin_core, "dcvalue", element="contributor", qualifier="other").text = dc_contributor_other
         
     dc_date_issued = str(row[5].value)
