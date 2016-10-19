@@ -21,4 +21,4 @@ The script then:
   * checks to make sure metadata is visible in DeepBlue.
   
 **TO-DOs**
-  * We'll eventually move away from the Deposit ID convention and will need to update this script as appropriate.
+  * *We'll eventually move away from the Deposit ID convention and will need to update this script as appropriate.*
