@@ -19,3 +19,6 @@ The script then:
   * checks to make sure right are correct in DeepBlue metadata; 
   * adds videostreams with MiVideo and Player IDs to items in DeepBlue; and 
   * checks to make sure metadata is visible in DeepBlue.
+  
+**TO-DOs**
+  * We'll eventually move away from the Deposit ID convention and will need to update this script as appropriate.
