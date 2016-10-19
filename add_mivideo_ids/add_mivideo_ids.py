@@ -78,11 +78,13 @@ for root, _, files in os.walk(path_to_deposit):
             
             dublin_core = tree.xpath("//dublin_core")[0]
             dc_identifier_other = tree.xpath("//dcvalue[@element='identifier'][@qualifier='other']")[0].text
+            player_id = 1455309471
             for mivideo_id in identifier_mivideo_ids.get(dc_identifier_other):
                 dc_identifier_videostream = etree.Element("dcvalue")
                 dc_identifier_videostream.attrib["element"] = "identifier"
                 dc_identifier_videostream.attrib["qualifier"] = "videostream"
-                dc_identifier_videostream.text = "https://cdnapisec.kaltura.com/p/1038472/sp/103847200/embedIframeJs/uiconf_id/33084471/partner_id/1038472?autoembed=true&entry_id={}&playerId=kaltura_player_1455309475&cache_st=1455309475&width=400&height=330&flashvars[streamerType]=auto".format(mivideo_id)
+                dc_identifier_videostream.text = "https://cdnapisec.kaltura.com/p/1758271/sp/175827100/embedIframeJs/uiconf_id/29300931/partner_id/1758271?autoembed=true&entry_id={0}&playerId=kaltura_player_{1}&cache_st=1455309475&width=400&height=330&flashvars[streamerType]=auto".format(mivideo_id, player_id)
+                player_id += 1
                 dublin_core.append(dc_identifier_videostream)
              
             with open(os.path.join(root, name), mode="w") as ead_out:
