@@ -144,7 +144,7 @@ def make_dublin_core(directory, row, item):
     
     dc_relation_ispartof = " - ".join(row[1].value.split(" - ")[:-1])
     if dc_relation_ispartof:
-        etree.SubElement(dublin_core, "dcvalue", element="relation", qualifier="ispartof").text = dc_relation_ispartof   
+        etree.SubElement(dublin_core, "dcvalue", element="relation", qualifier="ispartofseries").text = dc_relation_ispartof   
     
     dc_description_abstract = row[2].value
     if dc_description_abstract:
