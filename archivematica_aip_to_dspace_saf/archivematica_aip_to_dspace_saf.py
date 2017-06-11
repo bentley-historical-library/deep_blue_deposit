@@ -5,27 +5,17 @@ from zipfile import ZipFile
 import datetime
 import pyttsx
 
-mounting = ["sudo", "mount",
-    "-t", "cifs",
-    "-o", "username=eckardm,domain=umroot,rw,uid=eckardm,gid=eckardm",
-    "//bhl-digitalarchive.m.storage.umich.edu/bhl-digitalarchive",
-    "/media/Digital_Archive"]
-if os.path.isdir(os.path.join(os.path.sep,
-"media", "Digital_Archive")) is False:
-    os.system(" ".join(mounting))
-
+# sf_DeepBlue is auto-mounted
 deep_blue_saf_staging = os.path.join(
     os.path.sep,
-    "media", "Digital_Archive",
-    "MLibrary Drop", "DeepBlue", "deepblue_saf_staging")
+    "media", "sf_DeepBlue", "deepblue_saf_staging")
 deep_blue_saf_temp = os.path.join(
     os.path.sep,
-    "media", "Digital_Archive",
+    "media", "sf_DeepBlue",
     "MLibrary Drop", "DeepBlue", "deepblue_saf_temp")
 deep_blue_saf_transfer = os.path.join(
     os.path.sep,
-    "media", "Digital_Archive",
-    "MLibrary Drop", "DeepBlue", "deepblue_saf_transfer")
+    "media", "sf_DeepBlue", "deepblue_saf_transfer")
 
 for root, _, files in os.walk(deep_blue_saf_staging):
     for name in files:
